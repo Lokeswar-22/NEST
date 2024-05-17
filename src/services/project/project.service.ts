@@ -1,8 +1,7 @@
-// src/services/project/project.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Project } from 'src/models/project.model';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProjectService {
@@ -17,16 +16,16 @@ export class ProjectService {
   }
 
   async findAll(): Promise<Project[]> {
-    return this.projectRepository.find({ relations: ['employee'] });
+    return await this.projectRepository.find();
   }
 
   async findOne(id: number): Promise<Project> {
-    return this.projectRepository.findOne({ where: { id }, relations: ['employee'] });
+    return this.projectRepository.findOne({ where: { id } });
   }
 
   async update(id: number, project: Partial<Project>): Promise<Project> {
     await this.projectRepository.update(id, project);
-    return this.projectRepository.findOne({ where: { id }, relations: ['employee'] });
+    return this.projectRepository.findOne({ where: { id } });
   }
 
   async remove(id: number): Promise<void> {

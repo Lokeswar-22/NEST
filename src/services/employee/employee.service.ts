@@ -60,11 +60,12 @@ export class EmployeeService {
 
   async findProjectsByEmployee(employeeId: number): Promise<Project[]> {
     const employee = await this.employeesRepository.findOne(
-      { where: { id: employeeId }, relations: ['projects'] }
+      { where: { id: employeeId }, relations: ['project'] }
     );
     if (!employee) {
       throw new NotFoundException(`Employee with ID ${employeeId} not found`);
     }
-    return employee.projects;
-  }
+    return employee.projects; // Wrap the single project in an array
+}
+
 }

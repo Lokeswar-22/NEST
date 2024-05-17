@@ -22,7 +22,7 @@ export class Employees {
   @ManyToOne(() => Department, department => department.employees)
   department: Department;
 
-  @ManyToMany(() => Project, project => project.employees)
+  @ManyToMany(() => Project, project => project.employee)
   @JoinTable()
   projects: Project[];
 }
