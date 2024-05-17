@@ -1,5 +1,4 @@
-// src/models/department.model.ts
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Employees } from './employees.model';
 
 @Entity()

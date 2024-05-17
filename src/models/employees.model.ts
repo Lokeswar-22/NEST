@@ -1,5 +1,4 @@
-// src/models/employee.model.ts
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { Department } from './department.model';
 import { Project } from './project.model';
 
@@ -11,7 +10,7 @@ export class Employees {
   @Column()
   name: string;
 
-  @Column({ type: 'date' })
+  @Column()
   dob: Date;
 
   @Column()
@@ -23,6 +22,7 @@ export class Employees {
   @ManyToOne(() => Department, department => department.employees)
   department: Department;
 
-  @OneToMany(() => Project, project => project.employee)
+  @ManyToMany(() => Project, project => project.employees)
+  @JoinTable()
   projects: Project[];
 }

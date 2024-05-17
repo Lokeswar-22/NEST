@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { EmployeeService } from 'src/services/employee/employee.service';
 import { Employees } from 'src/models/employees.model';
+import { Department } from 'src/models/department.model';
+import { Project } from 'src/models/project.model';
 
 @Controller('employees')
 export class EmployeeController {
@@ -32,5 +34,20 @@ export class EmployeeController {
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
     await this.employeeService.remove(id);
+  }
+
+  @Get('department/:id')
+  findEmployeesByDepartment(@Param('id') id: number): Promise<Employees[]> {
+    return this.employeeService.findEmployeesByDepartment(id);
+  }
+
+  @Get(':id/department')
+  findDepartmentByEmployee(@Param('id') id: number): Promise<Department> {
+    return this.employeeService.findDepartmentByEmployee(id);
+  }
+
+  @Get(':id/projects')
+  findProjectsByEmployee(@Param('id') id: number): Promise<Project[]> {
+    return this.employeeService.findProjectsByEmployee(id);
   }
 }

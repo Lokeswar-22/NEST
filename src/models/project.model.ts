@@ -1,5 +1,4 @@
-// src/models/project.model.ts
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 import { Employees } from './employees.model';
 
 @Entity()
@@ -10,6 +9,6 @@ export class Project {
   @Column()
   name: string;
 
-  @ManyToOne(() => Employees, employee => employee.projects)
-  employee: Employees;
+  @ManyToMany(() => Employees, employee => employee.projects)
+  employees: Employees[];
 }
