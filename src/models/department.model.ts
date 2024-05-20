@@ -10,7 +10,7 @@ export class Department {
   name: string;
 
   @Column()
-  manager: string; // Add the manager column
+  manager: string; 
 
   @OneToMany(() => Employees, employee => employee.department)
   employees: Employees[];
