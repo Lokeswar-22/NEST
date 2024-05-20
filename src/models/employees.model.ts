@@ -19,10 +19,10 @@ export class Employees {
   @Column()
   address: string;
 
-  @ManyToOne(() => Department, department => department.employees)
+  @ManyToOne(() => Department, department => department.employees, { nullable: true })
   department: Department;
 
-  @ManyToMany(() => Project, project => project.employee)
-  @JoinTable()
+  @ManyToMany(() => Project, project => project.employees)
   projects: Project[];
+
 }

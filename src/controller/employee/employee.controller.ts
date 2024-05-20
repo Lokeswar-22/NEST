@@ -14,8 +14,10 @@ export class EmployeeController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Employees> {
-    return this.employeeService.findOne(id);
+  async findOne(@Param('id') id: number): Promise<any> {
+    const employee = await this.employeeService.findOne(id);
+    const department = await this.employeeService.findDepartmentByEmployee(id);
+    return { ...employee, department: department };
   }
 
   @Post()

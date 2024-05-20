@@ -12,9 +12,12 @@ export class DepartmentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Department> {
-    return this.departmentService.findOne(id);
+  async findOne(@Param('id') id: number): Promise<any> {
+    const department = await this.departmentService.findOne(id);
+    const employees = await this.departmentService.findEmployeesByDepartment(id);
+    return { ...department, employees }; 
   }
+
 
   @Post()
   create(@Body() department: Partial<Department>): Promise<Department> {

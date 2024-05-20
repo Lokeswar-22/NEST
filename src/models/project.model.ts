@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Employees } from './employees.model';
 
 @Entity()
@@ -9,9 +9,11 @@ export class Project {
   @Column()
   name: string;
 
-  @ManyToOne(() => Employees, employee => employee.projects, { nullable: true })
-  employee: Employees; // Make sure it's referencing the correct entity property
-
-  @Column({ nullable: true }) // Add this line to allow null values for the employeeId column
-  employeeId: number; // Add this property to store the employeeId
+  @ManyToMany(() => Employees, employee => employee.projects)
+  @JoinTable({
+    name: 'employee_project',
+    joinColumn: { name: 'projectId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'employeeId', referencedColumnName: 'id' }
+  })
+  employees: Employees[];
 }
