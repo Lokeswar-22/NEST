@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable,NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Department } from 'src/models/department.model';
@@ -32,7 +32,7 @@ export class DepartmentService {
   async remove(id: number): Promise<void> {
     await this.departmentRepository.delete(id);
   }
-  
+
   async findEmployeesByDepartment(departmentId: number): Promise<Employees[]> {
     const department = await this.departmentRepository.findOne(
       { where: { id: departmentId }, relations: ['employees'] }

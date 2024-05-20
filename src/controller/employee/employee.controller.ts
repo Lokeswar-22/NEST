@@ -17,9 +17,9 @@ export class EmployeeController {
   async findOne(@Param('id') id: number): Promise<any> {
     const employee = await this.employeeService.findOne(id);
     const department = await this.employeeService.findDepartmentByEmployee(id);
-    return { ...employee, department: department };
+    return { ...employee, department: department }; // Including department details in the response
   }
-
+  
   @Post()
   create(@Body() employee: Partial<Employees>): Promise<Employees> {
     return this.employeeService.create(employee);

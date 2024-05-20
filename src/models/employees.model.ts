@@ -23,6 +23,11 @@ export class Employees {
   department: Department;
 
   @ManyToMany(() => Project, project => project.employees)
+  @JoinTable({
+    name: 'employee_project',
+    joinColumn: { name: 'employeeId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'projectId', referencedColumnName: 'id' }
+  })
   projects: Project[];
 
 }

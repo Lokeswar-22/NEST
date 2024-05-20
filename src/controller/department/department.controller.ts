@@ -7,20 +7,17 @@ export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
   @Get()
-  findAll(): Promise<Department[]> {
+  async findAll(): Promise<Department[]> {
     return this.departmentService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<any> {
-    const department = await this.departmentService.findOne(id);
-    const employees = await this.departmentService.findEmployeesByDepartment(id);
-    return { ...department, employees }; 
+  async findOne(@Param('id') id: number): Promise<Department> {
+    return this.departmentService.findOne(id);
   }
 
-
   @Post()
-  create(@Body() department: Partial<Department>): Promise<Department> {
+  async create(@Body() department: Partial<Department>): Promise<Department> {
     return this.departmentService.create(department);
   }
 
@@ -28,12 +25,12 @@ export class DepartmentController {
   async update(
     @Param('id') id: number,
     @Body() department: Partial<Department>
-  ): Promise<void> {
-    await this.departmentService.update(id, department);
+  ): Promise<Department> {
+    return this.departmentService.update(id, department);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
-    await this.departmentService.remove(id);
+    return this.departmentService.remove(id);
   }
 }

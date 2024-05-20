@@ -16,16 +16,16 @@ export class ProjectService {
   }
 
   async findAll(): Promise<Project[]> {
-    return await this.projectRepository.find({ relations: ['employees'] });
+    return await this.projectRepository.find();
   }
   
   async findOne(id: number): Promise<Project> {
-    return this.projectRepository.findOne({ where: { id }, relations: ['employees'] });
+    return this.projectRepository.findOne({ where: { id } });
   }
 
   async update(id: number, project: Partial<Project>): Promise<Project> {
     await this.projectRepository.update(id, project);
-    return this.projectRepository.findOne({ where: { id }, relations: ['employees'] });
+    return this.projectRepository.findOne({ where: { id } });
   }
 
   async remove(id: number): Promise<void> {
