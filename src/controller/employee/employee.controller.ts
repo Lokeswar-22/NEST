@@ -1,15 +1,21 @@
+
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { EmployeeService } from 'src/services/employee/employee.service';
 import { Employees } from 'src/models/employees.model';
-import { Department } from 'src/models/department.model';
-import { Project } from 'src/models/project.model';
+import { CreateEmployeeDto } from 'src/dto/employee/employee-create.dto';
+import { UpdateEmployeeDto } from 'src/dto/employee/employee-update.dto';
 
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
+  @Post()
+  async create(@Body() createEmployeeDto: CreateEmployeeDto): Promise<Employees> {
+    return this.employeeService.create(createEmployeeDto);
+  }
+
   @Get()
-  findAll(): Promise<Employees[]> {
+  async findAll(): Promise<Employees[]> {
     return this.employeeService.findAll();
   }
 
@@ -19,37 +25,14 @@ export class EmployeeController {
     const department = await this.employeeService.findDepartmentByEmployee(id);
     return { ...employee, department: department }; 
   }
-  
-  @Post()
-  create(@Body() employee: Partial<Employees>): Promise<Employees> {
-    return this.employeeService.create(employee);
-  }
 
   @Put(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() employee: Partial<Employees>
-  ): Promise<void> {
-    await this.employeeService.update(id, employee);
+  async update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto): Promise<Employees> {
+    return this.employeeService.update(+id, updateEmployeeDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number): Promise<void> {
-    await this.employeeService.remove(id);
-  }
-
-  @Get('department/:id')
-  findEmployeesByDepartment(@Param('id') id: number): Promise<Employees[]> {
-    return this.employeeService.findEmployeesByDepartment(id);
-  }
-
-  @Get(':id/department')
-  findDepartmentByEmployee(@Param('id') id: number): Promise<Department> {
-    return this.employeeService.findDepartmentByEmployee(id);
-  }
-
-  @Get(':id/projects')
-  findProjectsByEmployee(@Param('id') id: number): Promise<Project[]> {
-    return this.employeeService.findProjectsByEmployee(id);
+  async remove(@Param('id') id: string): Promise<void> {
+    return this.employeeService.remove(+id);
   }
 }

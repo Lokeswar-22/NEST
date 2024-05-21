@@ -1,42 +1,50 @@
+
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Employees } from 'src/models/employees.model';
+import { CreateEmployeeDto } from 'src/dto/employee/employee-create.dto';
+import { UpdateEmployeeDto } from 'src/dto/employee/employee-update.dto';
 import { Department } from 'src/models/department.model';
 import { Project } from 'src/models/project.model';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectRepository(Employees)
-    private employeesRepository: Repository<Employees>,
+    private employeeRepository: Repository<Employees>,
     @InjectRepository(Department)
     private departmentRepository: Repository<Department>,
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
   ) {}
 
-  async create(employee: Partial<Employees>): Promise<Employees> {
-    const newEmployee = this.employeesRepository.create(employee);
-    return this.employeesRepository.save(newEmployee);
+  async create(createEmployeeDto: CreateEmployeeDto): Promise<Employees> {
+    const newEmployee = this.employeeRepository.create(createEmployeeDto);
+    return this.employeeRepository.save(newEmployee);
   }
 
   async findAll(): Promise<Employees[]> {
-    return await this.employeesRepository.find();
+    return this.employeeRepository.find();
   }
 
   async findOne(id: number): Promise<Employees> {
-    return this.employeesRepository.findOne({ where: { id }, relations: ['department', 'projects'] });
+    const employee = await this.employeeRepository.findOne({ where: { id } });
+    if (!employee) {
+      throw new NotFoundException(`Employee with ID ${id} not found`);
+    }
+    return employee;
   }
 
-  async update(id: number, employee: Partial<Employees>): Promise<Employees> {
-    await this.employeesRepository.update(id, employee);
-    return this.employeesRepository.findOne({ where: { id } });
+  async update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<Employees> {
+    await this.employeeRepository.update(id, updateEmployeeDto);
+    return this.employeeRepository.findOne({ where: { id } });
   }
 
   async remove(id: number): Promise<void> {
-    await this.employeesRepository.delete(id);
+    await this.employeeRepository.delete(id);
   }
+
 
   async findEmployeesByDepartment(departmentId: number): Promise<Employees[]> {
     const department = await this.departmentRepository.findOne(
@@ -49,7 +57,7 @@ export class EmployeeService {
   }
 
   async findDepartmentByEmployee(employeeId: number): Promise<Department> {
-    const employee = await this.employeesRepository.findOne(
+    const employee = await this.employeeRepository.findOne(
       { where: { id: employeeId }, relations: ['department'] }
     );
     if (!employee) {
@@ -59,7 +67,7 @@ export class EmployeeService {
   }
 
   async findProjectsByEmployee(employeeId: number): Promise<Project[]> {
-    const employee = await this.employeesRepository.findOne(
+    const employee = await this.employeeRepository.findOne(
       { where: { id: employeeId }, relations: ['projects'] }
     );
     if (!employee) {
@@ -67,5 +75,6 @@ export class EmployeeService {
     }
     return employee.projects;
   }
+
 
 }

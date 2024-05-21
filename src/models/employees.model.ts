@@ -19,6 +19,12 @@ export class Employees {
   @Column()
   address: string;
 
+  @Column()
+  email: string;
+
+  @Column()
+  designation: string;
+  
   @ManyToOne(() => Department, department => department.employees, { nullable: true })
   department: Department;
 

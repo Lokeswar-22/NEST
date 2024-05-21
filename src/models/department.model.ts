@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn,ManyToMany, Column,JoinTable, OneToMany } from 'typeorm';
 import { Employees } from './employees.model';
+import { Project } from './project.model';
 
 @Entity()
 export class Department {
@@ -11,7 +12,12 @@ export class Department {
 
   @Column()
   manager: string; 
+  @ManyToMany(() => Project, project => project.departments)
+  @JoinTable({ name: 'department_project' }) 
+  projects: Project[];
+
 
   @OneToMany(() => Employees, employee => employee.department)
   employees: Employees[];
+ 
 }

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Employees } from './employees.model';
+import { Department } from './department.model';
 
 @Entity()
 export class Project {
@@ -8,6 +9,11 @@ export class Project {
 
   @Column()
   name: string;
+  
+  @ManyToMany(() => Department, department => department.projects)
+  @JoinTable({ name: 'project_department' }) 
+  departments: Department[];
+  
 
   @ManyToMany(() => Employees, employee => employee.projects)
   @JoinTable({
@@ -16,4 +22,5 @@ export class Project {
     inverseJoinColumn: { name: 'employeeId', referencedColumnName: 'id' }
   })
   employees: Employees[];
+  
 }
