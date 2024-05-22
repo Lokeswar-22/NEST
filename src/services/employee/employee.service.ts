@@ -7,6 +7,7 @@ import { CreateEmployeeDto } from 'src/dto/employee/employee-create.dto';
 import { UpdateEmployeeDto } from 'src/dto/employee/employee-update.dto';
 import { Department } from 'src/models/department.model';
 import { Project } from 'src/models/project.model';
+import { EmployeeImage } from 'src/models/employee-image.model';
 
 @Injectable()
 export class EmployeeService {
@@ -17,6 +18,8 @@ export class EmployeeService {
     private departmentRepository: Repository<Department>,
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
+    @InjectRepository(EmployeeImage)
+    private employeeImageRepository: Repository<EmployeeImage>
   ) {}
 
   async create(createEmployeeDto: CreateEmployeeDto): Promise<Employees> {
@@ -75,6 +78,55 @@ export class EmployeeService {
     }
     return employee.projects;
   }
+
+
+
+  async findEmployeeWithImage(id: number): Promise<any> {
+    const employee = await this.employeeRepository.findOne({ where: { id } });
+    if (!employee) {
+      throw new Error(`Employee with ID ${id} not found`);
+    }
+    const employeeImage = await this.employeeImageRepository.findOne({
+      where: { employee: employee },
+    });
+    return {
+      ...employee,
+      imagePath: employeeImage ? employeeImage.imagePath : null,
+    };
+  }
+  
+  async findEmployeeImagePath(id: number): Promise<string> {
+    const employeeImage = await this.employeeImageRepository.findOne({
+      where: { employee: { id: id } },
+    });
+    if (!employeeImage) {
+      throw new Error(`Image for Employee with ID ${id} not found`);
+    }
+    return employeeImage.imagePath;
+    
+  }
+
+  async findEmployeeImage(id: number): Promise<EmployeeImage> {
+    return this.employeeImageRepository.findOne({
+      where: { employee: { id: id } },
+    });
+  }
+  async findOneWithImage(id: number): Promise<any> {
+    const employee = await this.employeeRepository.findOne({ where: { id } });
+    if (!employee) {
+      throw new NotFoundException(`Employee with ID ${id} not found`);
+    }
+
+    const employeeImage = await this.employeeImageRepository.findOne({
+      where: { employee: employee },
+    });
+
+    return { ...employee, image: employeeImage?.imagePath };
+  }
+
+
+
+
 
 
 }

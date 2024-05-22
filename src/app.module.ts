@@ -12,14 +12,23 @@ import { DepartmentController } from './controller/department/department.control
 import { ProjectController } from './controller/project/project.controller';
 import { Department } from './models/department.model';
 import { Project } from './models/project.model';
+import { EmployeeImage } from './models/employee-image.model';
+import { EmployeeImageService } from './services/employee-image/employee-image.service';
+import { EmployeeImageController } from './controller/employee-image/employee-image.controller';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   
-  controllers: [AppController, EmployeeController, DepartmentController, ProjectController],
+  controllers: [AppController, EmployeeController, DepartmentController, ProjectController, EmployeeImageController],
   imports: [
     TypeOrmModule.forRootAsync({useClass: TypeormService}),
-    TypeOrmModule.forFeature([Employees, Department, Project])
+    
+    TypeOrmModule.forFeature([Employees, Department, Project,EmployeeImage]),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public')})
   ],
-  providers: [AppService, TypeormService, EmployeeService, DepartmentService, ProjectService],
+  providers: [AppService, TypeormService, EmployeeService, DepartmentService, ProjectService, EmployeeImageService],
 })
+
 export class AppModule {}

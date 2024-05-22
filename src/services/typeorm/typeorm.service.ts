@@ -3,7 +3,7 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { Employees } from 'src/models/employees.model';
 import { Department } from 'src/models/department.model';
 import { Project } from 'src/models/project.model';
-
+import { EmployeeImage } from 'src/models/employee-image.model';
 @Injectable()
 export class TypeormService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
@@ -19,7 +19,7 @@ export class TypeormService implements TypeOrmOptionsFactory {
       },
       
       
-      entities: [Employees, Department, Project],
+      entities: [Employees, Department, Project, EmployeeImage],
     };
   }
 }

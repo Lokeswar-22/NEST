@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Department } from './department.model';
 import { Project } from './project.model';
+import { EmployeeImage } from './employee-image.model';
 
 @Entity()
 export class Employees {
@@ -25,6 +26,9 @@ export class Employees {
   @Column()
   designation: string;
   
+  @OneToMany(() => EmployeeImage, image => image.employee)
+  images: EmployeeImage[];
+
   @ManyToOne(() => Department, department => department.employees, { nullable: true })
   department: Department;
 
