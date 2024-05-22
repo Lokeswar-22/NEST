@@ -1,4 +1,3 @@
-
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { EmployeeService } from 'src/services/employee/employee.service';
 import { Employees } from 'src/models/employees.model';
