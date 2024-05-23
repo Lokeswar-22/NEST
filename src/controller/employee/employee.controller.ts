@@ -31,7 +31,7 @@ export class EmployeeController {
   async findEmployeeImage(@Param('id') id: string): Promise<EmployeeImage> {
     return this.employeeService.findEmployeeImage(+id);
   }
-  
+
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto): Promise<Employees> {
     return this.employeeService.update(+id, updateEmployeeDto);
