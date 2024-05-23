@@ -25,8 +25,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     TypeOrmModule.forRootAsync({useClass: TypeormService}),
     
     TypeOrmModule.forFeature([Employees, Department, Project,EmployeeImage]),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public')})
   ],
   providers: [AppService, TypeormService, EmployeeService, DepartmentService, ProjectService, EmployeeImageService],
 })
